@@ -1,11 +1,13 @@
 import request from 'superagent';
 
+const baseUrl = 'data/json';
+
 export const toc = async () => {
-  return request.get('data/toc.json').then(d => d.body);
+  return request.get(`${baseUrl}/toc.json`).then(d => d.body);
 }
 
 export const doc = async (slug) => {
-  return request.get(`data/${slug}.json`).then(d => d.body);
+  return request.get(`${baseUrl}/${slug}.json`).then(d => d.body);
 }
 
 export const getFirstSlug = async () => {
@@ -18,5 +20,5 @@ export const getFirstSlug = async () => {
 }
 
 export const book = async () => {
-  return request.get(`data/book.json`).then(d => d.body);
+  return request.get(`${baseUrl}/book.json`).then(d => d.body);
 }
