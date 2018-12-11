@@ -1,0 +1,3 @@
+[submodule "public/data"]
+	path = public/data
+	url = git@github.com:yuque-helper/example-data.git
