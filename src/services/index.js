@@ -1,5 +1,4 @@
 import request from 'superagent';
-
 const baseUrl = 'data/json';
 
 export const toc = async () => {

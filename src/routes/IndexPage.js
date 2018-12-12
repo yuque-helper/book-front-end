@@ -1,12 +1,19 @@
 import React from 'react';
 import { connect } from 'dva';
+import NProgress from 'nprogress';
 import PropTypes from 'prop-types';
 
 import Body from '../coms/body';
 import Sider from '../coms/sider';
 import Header from '../coms/header';
 import {doc, getFirstSlug} from '../services/index';
+
 import styles from './IndexPage.less';
+import 'nprogress/nprogress.css';
+
+NProgress.configure({
+  showSpinner: false
+});
 
 class Index extends React.Component{
   static propTypes = {
@@ -61,12 +68,19 @@ class Index extends React.Component{
     const {history, location} = this.props;
     location.pathname = `/${slug}.html`;
     history.push(location);
+    NProgress.start();
+    debugger;
+    try{
+      const docBody = await doc(slug);
 
-    const docBody = await doc(slug);
+      this.setState({
+        docBody: docBody
+      });
+    } catch(e){
+      console.log(e);
+    }
 
-    this.setState({
-      docBody: docBody
-    });
+    NProgress.done();
   }
 
   render(){

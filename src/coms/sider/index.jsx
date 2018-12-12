@@ -7,7 +7,6 @@ import {toTreeToc} from './util';
 
 import styles from './index.less';
 
-
 class Sider extends React.Component{
 
   state = {
