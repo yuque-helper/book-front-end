@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import hljs from 'highlight.js';
+import $ from 'jquery';
 
+import 'highlight.js/styles/github.css'
 import styles from './index.less';
 
 class Body extends React.Component{
@@ -14,6 +17,14 @@ class Body extends React.Component{
     })
   }
 
+  componentDidUpdate = (nextProps) => {
+    if(nextProps.doc !== this.props.doc){
+      $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+      });
+    }
+  }
+
   render(){
     const {doc} = this.props;
     if(!doc){
@@ -24,7 +35,7 @@ class Body extends React.Component{
       <div className={styles.container}>
         <div className={styles['doc-container'] + ' typo'}>
           <h1>{doc.title}</h1>
-          <div dangerouslySetInnerHTML={{__html: doc.body_html}}></div>
+          <div dangerouslySetInnerHTML={{__html: doc.body_html}} ></div>
         </div>
       </div>
     )

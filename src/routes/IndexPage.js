@@ -69,7 +69,6 @@ class Index extends React.Component{
     location.pathname = `/${slug}.html`;
     history.push(location);
     NProgress.start();
-    debugger;
     try{
       const docBody = await doc(slug);
 

@@ -8,7 +8,9 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
+    "highlight.js": "^9.13.1",
     "history": "^4.7.2",
+    "jquery": "^3.3.1",
     "nprogress": "^0.2.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
