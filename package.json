@@ -6,7 +6,9 @@
     "build": "roadhog build"
   },
   "dependencies": {
+    "antd": "^3.11.2",
     "classnames": "^2.2.6",
+    "clipboard": "^2.0.4",
     "dva": "^2.4.1",
     "highlight.js": "^9.13.1",
     "history": "^4.7.2",

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import hljs from 'highlight.js';
 import $ from 'jquery';
 
+import {copyButton} from '../../util/copy';
+
 import 'highlight.js/styles/github.css'
 import styles from './index.less';
 
@@ -21,6 +23,7 @@ class Body extends React.Component{
     if(nextProps.doc !== this.props.doc){
       $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);
+        copyButton(block);
       });
     }
   }

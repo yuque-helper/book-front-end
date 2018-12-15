@@ -10,3 +10,11 @@ html, body, :global(#root) {
 img{
   max-width: 100% !important;
 }
+
+:global(.copy-button){
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 14px;
+}
