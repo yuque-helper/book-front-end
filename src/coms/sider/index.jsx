@@ -1,13 +1,20 @@
 import React from 'react';
-import classNames from 'classnames';
 import _ from 'lodash';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+
 
 import {toc as getToc} from '../../services';
-import {toTreeToc, isJumpableSlug} from './util';
+import {toTreeToc, isJumpableSlug, getPathToParent} from './util';
 
 import styles from './index.less';
 
 class Sider extends React.Component{
+
+  static propTypes = {
+    slug: PropTypes.object,
+    onChange: PropTypes.func
+  }
 
   state = {
     toc: [],
@@ -17,11 +24,20 @@ class Sider extends React.Component{
 
   async componentDidMount(){
     const toc = await getToc();
+    const treeToc = toTreeToc(toc);
+
+    let expanded = [];
+    if(this.props.defaultSlug){
+      expanded = getPathToParent(treeToc, this.props.defaultSlug);
+    }
+
+    console.log(expanded);
+
     this.setState({
-      toc: toTreeToc(toc)
+      toc: treeToc,
+      expanded: expanded
     });
   }
-
 
   componentWillReceiveProps(nextProps){
     if(nextProps.slug !== this.props.slug && nextProps.slug !== this.state.active){

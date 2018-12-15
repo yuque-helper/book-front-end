@@ -48,3 +48,51 @@ export const isJumpableSlug = (slug) => {
 
   return true;
 }
+
+/**
+ * 得到slug和parent节点的映射
+ * @param {TreeToc} treeToc 树形toc
+ */
+export const getParentIndex = (treeToc) => {
+  if(!treeToc){
+    return {};
+  }
+
+  let index = {};
+  for(let toc of treeToc){
+    if(toc.children){
+      for(let child of toc.children){
+        index[child.slug] = toc;
+      }
+
+      const next = getParentIndex(toc.children);
+      index = {
+        ...index,
+        ...next
+      }
+    }
+  }
+
+  return index;
+}
+
+/**
+ * 获取默认展开的路径
+ * @param {TreeToc} treeToc 
+ * @param {string} slug 
+ * @return {array}
+ */
+export const getPathToParent = (treeToc, slug) => {
+  const parentIndex = getParentIndex(treeToc);
+  let curSlug = slug;
+  const path = [];
+
+  while(parentIndex[curSlug]){
+    const toc = parentIndex[curSlug];
+    const key = toc.slug + toc.title + toc.depth;
+    path.push(key);
+    curSlug = toc.slug;
+  }
+
+  return path;
+}
