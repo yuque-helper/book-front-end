@@ -1,25 +1,33 @@
+import React from 'react';
 import $ from 'jquery';
+import ReactDOM from 'react-dom';
 import ClipboardJS from 'clipboard';
 import message from 'antd/lib/message';
+import Tooltip from 'antd/lib/tooltip';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 import 'antd/lib/message/style/css';
+import 'antd/lib/tooltip/style/css';
+
+const Button = ({text}) => {
+  return (
+    <CopyToClipboard 
+      text={text} 
+      onCopy={() => {
+        message.success('复制成功');
+      }}
+    >
+      <Tooltip title="复制">
+        <span className="bi-icon bi-icon-copy" title="复制"></span>
+      </Tooltip>
+    </CopyToClipboard>
+  )
+}
 
 export const copyButton = ($div) => {
   const $pre = $($div.parentNode);
-  $pre.append(`<div class="copy-button" data-text="${$($div).text()}"><span class="bi-icon bi-icon-copy" title="复制"></span></div>`);
+  const div = document.createElement('div');
+  div.className = "copy-button";
+  ReactDOM.render(<Button text={$($div).text()}/>, div);
+  $pre.append(div);
 }
-
-const clipboard = new ClipboardJS('.copy-button', {
-  text: function(trigger) {
-      return trigger.getAttribute('data-text');
-  }
-});
-
-clipboard.on('success', () => {
-  message.success('复制成功');
-});
-
-clipboard.on('error', (e) => {
-  console.log(e);
-  message.error('复制失败');
-})
