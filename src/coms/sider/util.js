@@ -32,3 +32,19 @@ const findAndInsert = (t, toc) => {
     }
   }
 }
+
+/**
+ * @param {string} slug 绝对路径和#都会被认定为false
+ * @return boolean
+ */
+export const isJumpableSlug = (slug) => {
+  if(slug === '#'){
+    return false;
+  }
+
+  // if(/^https?:\/\/.+$/.test(slug)){
+  //   return false;
+  // }
+
+  return true;
+}

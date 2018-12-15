@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import {Link} from 'dva/router';
+import _ from 'lodash';
 
 import {toc as getToc} from '../../services';
-import {toTreeToc} from './util';
+import {toTreeToc, isJumpableSlug} from './util';
 
 import styles from './index.less';
 
@@ -31,14 +31,27 @@ class Sider extends React.Component{
     }
   }
 
-  onClick = (slug) => {
+  onClick = (slug, key) => {
     return () => {
-      // TODO: 展开或者收起侧边栏
       if(slug === '#'){
         return;
       }
+      this.trigger(key);
       this.props.onChange(slug);
     }
+  }
+
+  trigger = (key) => {
+    const {expanded} = this.state;
+    if(expanded.includes(key)){
+      _.remove(expanded, k => k == key);
+    } else {
+      expanded.push(key);
+    }
+
+    this.setState({
+      expanded: expanded
+    });
   }
 
   renderSider = (toc) => {
@@ -46,44 +59,60 @@ class Sider extends React.Component{
       <div>
         {
           toc.map(t => {
-            const showTrigger = t.children && t.children.length > 0;
+            const hasChildren = t.children && t.children.length > 0;
+            const canJump = isJumpableSlug(t.slug);
+            const key = t.slug + t.title + t.depth;
+            const isExpand = this.state.expanded.includes(key);
+
             return (
               <div 
-                key={t.slug + t.title + t.depth} 
+                key={key}
                 style={{ paddingLeft: 10 }}
               >
                 <div 
                   className={classNames({
                     [styles.doc]: true,
-                    [styles.active]: t.slug === this.state.active
-                  })
-                  }
-                  onClick={this.onClick(t.slug)}
+                    [styles.active]: t.slug === this.state.active,
+                    [styles.disable]: !canJump && !hasChildren
+                  })}
+                  onClick={this.onClick(t.slug, key)}
                 > 
                   {
-                    showTrigger
+                    hasChildren
                     &&
-                    <Link
-                      to={`${t.slug}.html`}
-                      className={styles.trigger} 
-                      onClick={(e)=> {
-                        e.preventDefault();
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        this.trigger(key)
                       }}
+                      className={
+                        classNames(
+                          'larkicon',
+                          styles.trigger,
+                          {
+                            'larkicon-triangle-right-sw': !isExpand,
+                            'larkicon-triangle-down-sw': isExpand
+                          }
+                        )
+                      }
                     >
-                    </Link> 
+                    </span>
                   }
                   <a 
                     href={`${t.slug}.html`} 
                     onClick={(e)=> {
                       e.preventDefault();
-                    }} 
+                    }}
+                    style={{
+                      cursor: canJump ? 'pointer': 'text'
+                    }}
                     className={styles.title}
                   >
                     {t.title}
                   </a>
                 </div>
                 {
-                  (t.children && t.children.length > 0) && (
+                  (hasChildren && isExpand) && (
                     this.renderSider(t.children)
                   )
                 }
