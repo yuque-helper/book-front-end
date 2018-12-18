@@ -31,8 +31,6 @@ class Sider extends React.Component{
       expanded = getPathToParent(treeToc, this.props.defaultSlug);
     }
 
-    console.log(expanded);
-
     this.setState({
       toc: treeToc,
       expanded: expanded
@@ -99,7 +97,7 @@ class Sider extends React.Component{
                     <span
                       onClick={(e) => {
                         e.stopPropagation();
-                        this.trigger(key)
+                        this.trigger(key);
                       }}
                       className={
                         classNames(
@@ -118,6 +116,9 @@ class Sider extends React.Component{
                     href={`${t.slug}.html`} 
                     onClick={(e)=> {
                       e.preventDefault();
+                      if(!canJump){
+                        this.trigger(key);
+                      }
                     }}
                     style={{
                       cursor: canJump ? 'pointer': 'text'
