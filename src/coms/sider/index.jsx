@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 
 import {toc as getToc} from '../../services';
-import {toTreeToc, isJumpableSlug, getPathToParent} from './util';
+import {toTreeToc, isJumpableSlug, getPathToParent, getDocKey} from './util';
 
 import styles from './index.less';
 
@@ -28,7 +28,7 @@ class Sider extends React.Component{
 
     let expanded = [];
     if(this.props.defaultSlug){
-      expanded = getPathToParent(treeToc, this.props.defaultSlug);
+      expanded = getPathToParent(treeToc, toc, this.props.defaultSlug);
     }
 
     this.setState({
@@ -75,7 +75,7 @@ class Sider extends React.Component{
           toc.map(t => {
             const hasChildren = t.children && t.children.length > 0;
             const canJump = isJumpableSlug(t.slug);
-            const key = t.slug + t.title + t.depth;
+            const key = getDocKey(t);
             const isExpand = this.state.expanded.includes(key);
 
             return (

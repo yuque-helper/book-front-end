@@ -33,7 +33,6 @@ class Index extends React.Component{
     if(slug.startsWith('/')){
       slug = slug.replace(/^\//, '');
     }
-
     return slug;
   }
 

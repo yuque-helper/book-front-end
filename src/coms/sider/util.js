@@ -1,4 +1,8 @@
-export const toTreeToc = (toc) => {
+import _ from 'lodash';
+
+export const toTreeToc = (listToc) => {
+  const toc = _.cloneDeep(listToc);
+
   if(!Array.isArray(toc)){
     throw Error('toc 不是一个数组');
   }
@@ -49,6 +53,10 @@ export const isJumpableSlug = (slug) => {
   return true;
 }
 
+export const getDocKey = (doc) => {
+  return `${doc.slug}_${doc.depth}_${doc.title}`;
+}
+
 /**
  * 得到slug和parent节点的映射
  * @param {TreeToc} treeToc 树形toc
@@ -62,7 +70,7 @@ export const getParentIndex = (treeToc) => {
   for(let toc of treeToc){
     if(toc.children){
       for(let child of toc.children){
-        index[child.slug] = toc;
+        index[getDocKey(child)] = toc;
       }
 
       const next = getParentIndex(toc.children);
@@ -76,22 +84,37 @@ export const getParentIndex = (treeToc) => {
   return index;
 }
 
+
+const getSlugKey = (listToc, slug) => {
+  const doc = _.find(listToc, {slug: slug});
+  if(doc){
+    return getDocKey(doc);
+  }
+  return null;
+};
+
 /**
  * 获取默认展开的路径
  * @param {TreeToc} treeToc 
  * @param {string} slug 
  * @return {array}
  */
-export const getPathToParent = (treeToc, slug) => {
+export const getPathToParent = (treeToc, listToc, slug) => {
   const parentIndex = getParentIndex(treeToc);
-  let curSlug = slug;
+  const slugKey = getSlugKey(listToc, slug);
+
+  let curSlugKey = slugKey;
   const path = [];
 
-  while(parentIndex[curSlug]){
-    const toc = parentIndex[curSlug];
-    const key = toc.slug + toc.title + toc.depth;
+  if(slug === '#'){
+    return [];
+  }
+
+  while(parentIndex[curSlugKey]){
+    const toc = parentIndex[curSlugKey];
+    const key = getDocKey(toc);
     path.push(key);
-    curSlug = toc.slug;
+    curSlugKey = key;
   }
 
   return path;
