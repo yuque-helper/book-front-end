@@ -35,7 +35,7 @@ class Body extends React.Component{
     }
 
     return (
-      <div className={styles.container}>
+      <div className={styles.container + " lake-engine-view"} >
         <div className={styles['doc-container'] + ' typo'}>
           <h1>{doc.title}</h1>
           <div dangerouslySetInnerHTML={{__html: doc.body_html}} ></div>
