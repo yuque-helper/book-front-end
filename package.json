@@ -12,8 +12,10 @@
     "dva": "^2.4.1",
     "highlight.js": "^9.13.1",
     "history": "^4.7.2",
+    "in-viewport": "^3.6.0",
     "jquery": "^3.3.1",
     "nprogress": "^0.2.0",
+    "query-string": "^6.4.0",
     "react": "^16.2.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.2.0"

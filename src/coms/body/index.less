@@ -47,3 +47,45 @@
   -webkit-transition: width .3s linear,padding .3s linear;
   transition: width .3s linear,padding .3s linear;  
 }
+
+.doc-toc{
+  position: fixed;
+  top: 60px;
+  left: auto;
+  right: 10px;
+  width: 200px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-top: 40px;
+  font-size: 12px;    
+
+  .doc-item {
+    padding: 3px 10px 3px 16px;
+    line-height: 18px;
+    border-left: 2px solid #e8e8e8;
+    color: #595959;    
+    cursor: pointer;
+
+    &:hover {
+      color: #8c8c8c;      
+    }
+  }
+
+  :global(.doc-item-2) {
+    padding-left: 1.2em;
+  }
+
+  :global(.doc-item-3) {
+    padding-left: 2.4em;
+  }
+
+  .doc-item-active {
+    border-left: 2px solid #25b864;
+    color: #25b864;
+    &:hover {
+      color: #25b864;
+    }    
+  }
+}
