@@ -76,19 +76,14 @@ class Body extends React.Component{
     const div = $('#yuque-book-container');
 
     const isaAnchor = (ele) => {
-      return ele.find('a').length 
-      && ele.text().trim() !== ''
-      && MATCH_TAGS.includes(ele[0].tagName)
-      ; 
+      return ele.text().trim() !== '' && MATCH_TAGS.includes(ele[0].tagName);
     }
 
     const hs = div.find('[id]');
 
-
     const toc = [];
 
     for(let ele of hs) {
-
       ele = $(ele);
 
       if(isaAnchor(ele)) {
