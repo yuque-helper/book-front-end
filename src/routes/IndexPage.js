@@ -66,8 +66,10 @@ class Index extends React.Component{
   onChange = async (slug) => {
     const {history, location} = this.props;
     location.pathname = `/${slug}.html`;
+    location.search = '';
     history.push(location);
     NProgress.start();
+
     try{
       const docBody = await doc(slug);
 

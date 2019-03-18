@@ -13,7 +13,7 @@ import {copyButton} from '../../util/copy';
 import 'highlight.js/styles/github.css'
 import styles from './index.less';
 
-const MAX_LEVEL = 4;
+const MATCH_TAGS = ['H1', 'H2', 'H3', 'H4'];
 
 class Body extends React.Component{
   static propTypes = {
@@ -45,6 +45,12 @@ class Body extends React.Component{
       });
 
       this.initDocToc();
+
+      const search = _.get(this, 'props.location.search');
+
+      if(!search) {
+        this.topDOM && this.topDOM.scrollIntoView(true);
+      }      
     }
   }
 
@@ -60,7 +66,6 @@ class Body extends React.Component{
           activeTocId: anchor
         });
 
-        // FIXME: 锚点恢复, 不一定能等到dom生成了才执行
         setTimeout(this.toView(anchor), 100);
       }
     }
@@ -71,48 +76,37 @@ class Body extends React.Component{
     const div = $('#yuque-book-container');
 
     const isaAnchor = (ele) => {
-      return ele.find('a').length && ele.text().trim() !== ''; 
+      return ele.find('a').length 
+      && ele.text().trim() !== ''
+      && MATCH_TAGS.includes(ele[0].tagName)
+      ; 
     }
 
-    /**
-     * 
-     * @param {element} element 需要遍历的元素
-     * @param {number} level h级别
-     * @param {number} depth 遍历深度
-     */
-    const findChildren = (element, level, depth) => {
-      if(level >= MAX_LEVEL) {
-        return [];
-      }
+    const hs = div.find('[id]');
 
-      const eles = $(element).find(`h${level}[id]`);
-      const tree = [];
 
-      for(let ele of eles) {
-        ele = $(ele);
-        if(isaAnchor(ele)) {
-          tree.push({
+    const toc = [];
+
+    for(let ele of hs) {
+
+      ele = $(ele);
+
+      if(isaAnchor(ele)) {
+        toc.push({
             ele,
-            depth,
             title: ele.text(),
             id: ele.attr('id'),
-            children: findChildren(ele, level + 1, depth + 1),
-            level: level
-          })
-        }
-      }
+            level: Number(ele[0].tagName.replace(/H/g, '')),
 
-      if(!tree.length) {
-        return findChildren(element, level + 1, depth);
+        });
       }
-
-      return tree;
     }
 
-    let tree = findChildren(div, 1, 0) || [];
+    const minLevel = _.min(toc.map(t => t.level));
+    toc.forEach(t => t.depth = t.level - minLevel);
 
     this.setState({
-      toc: _.flattenDeep(tree)
+      toc: toc
     }, this.onScroll);
   }
 
@@ -155,9 +149,13 @@ class Body extends React.Component{
 
     return (
       <div onScroll={this.onScroll} className={styles.container + " lake-engine-view"} >
+        <div ref={(dom) => this.topDOM = dom}></div>
         <div className={styles['doc-container'] + ' typo'} id="yuque-book-container">
           <h1>{doc.title}</h1>
-          <div dangerouslySetInnerHTML={{__html: doc.body_html}} ></div>
+          <div 
+            dangerouslySetInnerHTML={{__html: doc.body_html}}
+          >
+          </div>
           <div className={styles['doc-wrapper']}>
           <div className={styles['doc-toc']}>
             {
@@ -166,8 +164,7 @@ class Body extends React.Component{
                   <div 
                     className={
                       classnames(
-                        styles['doc-item'], 
-                        `doc-link-${item.depth}`, 
+                        styles['doc-item'],  
                         {
                           [styles['doc-item-active']]: activeTocId === item.id
                         }
@@ -175,9 +172,11 @@ class Body extends React.Component{
                     }
                     onClick={this.toView(item.id)}
                   >
+                    <span className={`doc-link-${item.depth}`}>
                     {
                       item.title
                     }
+                    </span>
                   </div>
                 )
               })
