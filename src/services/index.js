@@ -21,3 +21,14 @@ export const getFirstSlug = async () => {
 export const book = async () => {
   return request.get(`${baseUrl}/book.json`).then(d => d.body);
 }
+
+export const getFirstSlugByToc = result => {
+  if (!result) {
+    return "";
+  }
+  for (let toc of result) {
+    if (toc.slug !== "#") {
+      return toc.slug;
+    }
+  }
+};

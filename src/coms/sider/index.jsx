@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 
-import {toc as getToc} from '../../services';
+import {toc as getToc, getFirstSlugByToc} from '../../services';
 import {toTreeToc, isJumpableSlug, getPathToParent, getDocKey} from './util';
 
 import styles from './index.less';
@@ -29,6 +29,9 @@ class Sider extends React.Component{
     let expanded = [];
     if(this.props.defaultSlug){
       expanded = getPathToParent(treeToc, toc, this.props.defaultSlug);
+    } else {
+      const firstSlug = getFirstSlugByToc(toc);
+      expanded = getPathToParent(treeToc, toc, firstSlug);
     }
 
     this.setState({
