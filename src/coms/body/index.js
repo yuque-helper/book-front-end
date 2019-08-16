@@ -113,7 +113,9 @@ class Body extends React.Component{
         continue;
       }
 
-      if(inViewport(ele)){
+      if(inViewport(ele, {
+        offset: -60 // 这里的 viewport 应该是 body 部分，不包含 header
+      })){
         this.setState({
           activeTocId: item.id
         });
@@ -165,9 +167,10 @@ class Body extends React.Component{
                         }
                       )
                     }
+                    title={item.title}
                     onClick={this.toView(item.id)}
                   >
-                    <span className={`doc-link-${item.depth}`}>
+                    <span className={`doc-link doc-link-${item.depth}`}>
                     {
                       item.title
                     }

@@ -58,8 +58,11 @@
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
-  padding-top: 40px;
-  font-size: 12px;    
+  padding-top: 32px;
+  padding-bottom: 16px;
+  font-size: 12px;
+  height: calc(~"100vh - 60px");
+  overflow-y: auto;    
 
   .doc-item {
     padding: 3px 10px 3px 16px;
@@ -71,6 +74,13 @@
     &:hover {
       color: #8c8c8c;      
     }
+  }
+
+  :global(.doc-link) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   :global(.doc-link-1) {
