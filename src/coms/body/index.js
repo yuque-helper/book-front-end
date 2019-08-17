@@ -92,7 +92,6 @@ class Body extends React.Component{
             title: ele.text(),
             id: ele.attr('id'),
             level: Number(ele[0].tagName.replace(/H/g, '')),
-
         });
       }
     }
@@ -172,7 +171,7 @@ class Body extends React.Component{
                   >
                     <span className={`doc-link doc-link-${item.depth}`}>
                     {
-                      item.title
+                      item.title.trim()
                     }
                     </span>
                   </div>

@@ -24,10 +24,26 @@ const Button = ({text}) => {
   )
 }
 
-export const copyButton = ($div) => {
-  const $pre = $($div.parentNode);
-  const div = document.createElement('div');
-  div.className = "copy-button";
-  ReactDOM.render(<Button text={$($div).text()}/>, div);
-  $pre.append(div);
+/**
+ * 在代码块中创建一个 copy 按钮以及防止代码块代码溢出
+ * @param {HTMLElement} codeEle 
+ */
+export const copyButton = (codeEle) => {
+  const $codeEle = $(codeEle);
+  const $pre = $(codeEle.parentNode);
+  const code = $codeEle.text();
+
+  // 往 pre 下面加入一个 div，用于控制代码溢出
+  const wrapper = document.createElement('div');
+  // copy button
+  const cpBtn = document.createElement('div');
+
+  $(wrapper).css('overflow', 'auto');
+
+  cpBtn.className = "copy-button";
+  ReactDOM.render(<Button text={code}/>, cpBtn);
+
+  $pre.append(wrapper);  
+  $pre.append(cpBtn);
+  $codeEle.appendTo(wrapper);
 }
