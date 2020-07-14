@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 import ReactDOM from 'react-dom';
-import ClipboardJS from 'clipboard';
 import message from 'antd/lib/message';
 import Tooltip from 'antd/lib/tooltip';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
