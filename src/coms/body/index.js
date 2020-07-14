@@ -11,6 +11,8 @@ import {withRouter} from 'dva/router';
 import {copyButton} from '../../util/copy';
 
 import 'highlight.js/styles/github.css'
+import {getQuery, getSearch} from '../../util/query';
+
 import styles from './index.less';
 
 const MATCH_TAGS = ['H1', 'H2', 'H3', 'H4'];
@@ -125,13 +127,19 @@ class Body extends React.Component{
   }
 
   toView = (id) => {
+    const {location} = this.props;
+
     return () => {
+      const query = getQuery(location.search);
+
       document.getElementById(id).scrollIntoView(true);
+      query.anchor = id;
+
+      getSearch(query);
+
       this.props.history.push({
-        search: qs.stringify({
-          anchor: id
-        })
-      })
+        search: getSearch(query)
+      });
     };
   }
 
@@ -144,7 +152,10 @@ class Body extends React.Component{
     const {toc, activeTocId} = this.state;
 
     return (
-      <div onScroll={this.onScroll} className={styles.container + " lake-engine-view"} >
+      <div 
+        onScroll={this.onScroll}
+        className={styles.container + " lake-engine-view"}
+      >
         <div ref={(dom) => this.topDOM = dom}></div>
         <div className={styles['doc-container'] + ' typo'} id="yuque-book-container">
           <h1>{doc.title}</h1>

@@ -1,11 +1,13 @@
 import React from 'react';
-import { connect } from 'dva';
+import _ from 'lodash';
+import {connect} from 'dva';
 import NProgress from 'nprogress';
 import PropTypes from 'prop-types';
 
 import Body from '../coms/body';
 import Sider from '../coms/sider';
 import Header from '../coms/header';
+import {getQuery, getSearch} from '../util/query';
 import {doc, getFirstSlug} from '../services/index';
 
 import styles from './IndexPage.less';
@@ -20,7 +22,8 @@ class Index extends React.Component{
     history: PropTypes.shape({
       push: PropTypes.func
     }),
-    location: PropTypes.object
+    location: PropTypes.object,
+    headless: false
   }
 
   state = {
@@ -39,6 +42,15 @@ class Index extends React.Component{
   async componentDidMount(){
     const {location} = this.props;
     const slug = this.getSlug(location);
+    const search = _.get(this, 'props.location.search')
+    const query = getQuery(search);
+
+    if(query.headless === 'true') {
+      this.setState({
+        headless: true
+      });
+    }
+
     if(slug){
       this.getDocByLocation(location); 
     } else {
@@ -65,8 +77,13 @@ class Index extends React.Component{
 
   onChange = async (slug) => {
     const {history, location} = this.props;
+    const query = getQuery(location.search);
+
+    delete query.anchor;
+
     location.pathname = `/${slug}.html`;
-    location.search = '';
+    location.search = getSearch(query);
+
     history.push(location);
     NProgress.start();
 
@@ -84,18 +101,23 @@ class Index extends React.Component{
   }
 
   render(){
-
-    const {docBody} = this.state;
+    const {docBody, headless} = this.state;
 
     return (
       <div className={styles.normal}>
-        <Header />
+        {
+          !headless && <Header />
+        }
         <div className={styles.body}>
-          <Sider 
-            onChange={this.onChange}
-            defaultSlug={this.getSlug()}
-            slug={this.getSlug()}
-          />
+          {
+            !headless && (
+              <Sider 
+                onChange={this.onChange}
+                defaultSlug={this.getSlug()}
+                slug={this.getSlug()}
+              />
+            )
+          }
           <Body doc={docBody} />
         </div>
       </div>
