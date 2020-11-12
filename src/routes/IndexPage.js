@@ -64,7 +64,9 @@ class Index extends React.Component{
 
   componentWillReceiveProps(nextProps){
     if(nextProps.location.pathname !== this.props.location.pathname){
-      this.getDocByLocation(nextProps.location);
+      const slug = this.getSlug(nextProps.location);
+
+      this.onChange(slug);
     }
   }
 
