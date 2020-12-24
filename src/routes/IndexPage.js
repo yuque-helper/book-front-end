@@ -8,7 +8,7 @@ import Body from '../coms/body';
 import Sider from '../coms/sider';
 import Header from '../coms/header';
 import {getQuery, getSearch} from '../util/query';
-import {doc, getFirstSlug} from '../services/index';
+import {doc, getFirstSlug, searchDoc, searchTitle, toc} from '../services/index';
 
 import styles from './IndexPage.less';
 import 'nprogress/nprogress.css';
@@ -27,7 +27,10 @@ class Index extends React.Component{
   }
 
   state = {
-    docBody: null
+    docBody: null,
+    docSearch: null,
+    docsearchTitle: null,
+    docToc: []
   }
 
   // 获取当前的slug
@@ -50,6 +53,16 @@ class Index extends React.Component{
         headless: true
       });
     }
+
+    const docSearch = await searchDoc();
+    const docsearchTitle = await searchTitle();
+    const docToc = await toc();
+
+    this.setState({
+      docSearch: docSearch,
+      docsearchTitle: docsearchTitle,
+      docToc: docToc
+    });
 
     if(slug){
       this.getDocByLocation(location); 
@@ -103,12 +116,12 @@ class Index extends React.Component{
   }
 
   render(){
-    const {docBody, headless} = this.state;
+    const {docBody, headless, docSearch, docToc, docsearchTitle} = this.state;
 
     return (
       <div className={styles.normal}>
         {
-          !headless && <Header />
+          !headless && <Header docsearchTitle={docsearchTitle}  docSearch={docSearch} docToc={docToc} onChange={this.onChange}/>
         }
         <div className={styles.body}>
           {

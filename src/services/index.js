@@ -5,6 +5,24 @@ export const toc = async () => {
   return request.get(`${baseUrl}/toc.json`).then(d => d.body);
 }
 
+export const searchDoc = async () => {
+  try {
+    return request.get(`data/search/search.json`).then(d => d.body);
+  } catch(error)  {
+    console.error(error)
+  }
+}
+
+export const searchTitle = async () => {
+  try {
+    return request.get(`data/search/search-title.json`).then(d => d.body);
+  } catch(error)  {
+    console.error(error)
+  }
+}
+
+
+
 export const doc = async (slug) => {
   return request.get(`${baseUrl}/${slug}.json`).then(d => d.body);
 }
