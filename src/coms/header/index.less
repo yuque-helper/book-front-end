@@ -18,11 +18,17 @@
 }
 
 .search{
-  position: absolute;
-  display: inline-block;
+  position: absolute !important;
+  display: inline-block !important;
   right: 30px;
   top: 10px;
+
+  & > div {
+    border: none;
+    box-shadow: none;
+  }
 }
+
 :global(.ant-select-selection) {
   border: 0px;
   outline: none;

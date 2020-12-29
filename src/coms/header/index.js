@@ -32,11 +32,17 @@ class Header extends React.Component{
   handleSearch = (value) => {
     const {docSearch, docToc, docsearchTitle} = this.props;
     if ( (docsearchTitle[value] && docsearchTitle[value].length) || (docSearch[value] && docSearch[value].length)) {
-      let mergearr = _.concat(docsearchTitle[value] || [], docSearch[value] || []);
-      mergearr = _.uniq(mergearr);
+      let mergeArr = _.concat(docsearchTitle[value] || [], docSearch[value] || []);
+      mergeArr = _.uniq(mergeArr);
       let arr = [];
-      for (let i = 0; i < mergearr.length; i++) {
-        let detailToc = _.find(docToc, (o) => { return o.doc_id == mergearr[i]});
+
+      for (let i = 0; i < mergeArr.length; i++) {
+        let detailToc = _.find(docToc, (o) => { return o.doc_id == mergeArr[i]});
+
+        if(!detailToc) {
+          continue;
+        }
+
         arr.push({
           title: detailToc.title.replace(value, `<b>${value}</b>`),
           titleTip: detailToc.title,
@@ -76,23 +82,24 @@ class Header extends React.Component{
     const {book, options} = this.state;
     const {docSearch} = this.props;
 
-
     return (
       <div className={styles.header}>
         <div className={styles.title}>
           {book.name}
-          {docSearch && <AutoComplete
-              className={styles.search}
-              size="large"
-              dataSource={options.map(this.renderOption)}
-              style={{ width: '300px',border: '0px'}}
-              onSelect={this.onSelect}
-              onSearch={this.handleSearch}
-              placeholder="input here"
-              optionLabelProp="text"
-            >
-              <Input suffix={<Icon type="search" className="certain-category-icon" />} />
-            </AutoComplete>
+          {docSearch && (
+            <AutoComplete
+                className={styles.search}
+                size="large"
+                dataSource={options.map(this.renderOption)}
+                style={{ width: '300px',border: '0px'}}
+                onSelect={this.onSelect}
+                onSearch={this.handleSearch}
+                placeholder="input here"
+                optionLabelProp="text"
+              >
+                <Input suffix={<Icon type="search" className="certain-category-icon" />} />
+              </AutoComplete>
+          )
           }
         </div>
       </div>
