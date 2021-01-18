@@ -2,7 +2,7 @@
   "version": "0.7.1",
   "private": true,
   "scripts": {
-    "start": "roadhog server",
+    "start": "PORT=3001 roadhog server",
     "build": "roadhog build"
   },
   "dependencies": {

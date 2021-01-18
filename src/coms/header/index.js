@@ -35,13 +35,18 @@ class Header extends React.Component{
       let mergearr = _.concat(docsearchTitle[value] || [], docSearch[value] || []);
       mergearr = _.uniq(mergearr);
       let arr = [];
+      console.info('mergearr==', mergearr)
+      console.info('docToc==', docToc)
+
       for (let i = 0; i < mergearr.length; i++) {
-        let detailToc = _.find(docToc, (o) => { return o.doc_id == mergearr[i]});
-        arr.push({
-          title: detailToc.title.replace(value, `<b>${value}</b>`),
-          titleTip: detailToc.title,
-          slug: detailToc.doc_id
-        })
+        let detailToc = _.find(docToc, (o) => { return o.doc_id === mergearr[i]});
+        if (detailToc) {
+          arr.push({
+            title: detailToc.title ? detailToc.title.replace(value, `<b>${value}</b>`) : '',
+            titleTip: detailToc.title,
+            slug: detailToc.doc_id
+          })
+        }
       }
 
       this.setState({

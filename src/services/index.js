@@ -1,5 +1,6 @@
 import request from 'superagent';
 const baseUrl = 'data/json';
+const baseSearchUrl = 'data/search';
 
 export const toc = async () => {
   return request.get(`${baseUrl}/toc.json`).then(d => d.body);
@@ -7,7 +8,7 @@ export const toc = async () => {
 
 export const searchDoc = async () => {
   try {
-    return request.get(`data/search/search.json`).then(d => d.body);
+    return request.get(`${baseSearchUrl}/search.json`).then(d => d.body);
   } catch(error)  {
     console.error(error)
   }
@@ -15,7 +16,7 @@ export const searchDoc = async () => {
 
 export const searchTitle = async () => {
   try {
-    return request.get(`data/search/search-title.json`).then(d => d.body);
+    return request.get(`${baseSearchUrl}/search-title.json`).then(d => d.body);
   } catch(error)  {
     console.error(error)
   }

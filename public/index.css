@@ -3832,3 +3832,24 @@ div.mermaidTooltip {
   -ms-transform: rotate(0deg) scale(1);
   transform: rotate(0deg) scale(1)
 }
+
+.ant-select-selection {
+  border: 0px !important;
+  outline: none !important;
+}
+
+.ant-select-open .ant-select-selection {
+  border: 0px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.ant-select-focused .ant-select-selection {
+  border: 0px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.global-search-item-desc b {
+  color: #25B865 !important;
+}
