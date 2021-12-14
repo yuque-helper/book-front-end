@@ -164,7 +164,7 @@ class Body extends React.Component{
           >
           </div>
           <div className={styles['doc-wrapper']}>
-          <div className={styles['doc-toc']}>
+          <div className={classnames(styles['doc-toc'], styles['has-width'])}>
             {
               toc.map(item => {
                 return (

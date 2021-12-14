@@ -43,10 +43,18 @@
   max-width: 960px;
   width: calc(~"100% - 200px");
   min-height: 600px;
-  padding: 32px 80px 32px 48px;
+  padding: 32px 90px 32px 48px;
   -webkit-transition: width .3s linear,padding .3s linear;
   transition: width .3s linear,padding .3s linear;
   padding-bottom: 40vh;
+
+}
+
+
+@media screen and (min-width: 820px) {
+  .has-width{
+    width: 200px;
+  }
 }
 
 .doc-toc{
@@ -54,7 +62,6 @@
   top: 60px;
   left: auto;
   right: 10px;
-  width: 200px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
